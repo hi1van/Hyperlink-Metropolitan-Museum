@@ -26,6 +26,15 @@ def hyperMuseum():
         return "Image not found", 404
 
     image = art_object["primaryImageSmall"]
+    artist = art_object["artistDisplayName"]
+    artist_bio = art_object["artistDisplayBio"]
+    artwork_date = art_object["objectDate"]
+    medium = art_object["medium"]
+    dimensions = art_object["dimensions"]
+    city_country = art_object["city"] + ", " + art_object["country"]
+    department = art_object["department"]
+    object_name = art_object["objectName"]
+    title = art_object["title"]
     
     return render_template(
         "hyperMuseum.html",
