@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect
-import museum
 from waitress import serve
 from museum import *
 
