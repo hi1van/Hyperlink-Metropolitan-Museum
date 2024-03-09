@@ -2,15 +2,15 @@ import requests
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
 
-# returns object
-def get_object(objectID):
+# returns object, returns None if objectID is invalid
+def get_art_object(objectID):
     
     url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
 
-    object = requests.get(url)
+    art_object = requests.get(url)
 
-    if object.status_code == 200:
-        return object
+    if art_object.status_code == 200:
+        return art_object.json()
     else:
         return None
 
@@ -22,7 +22,7 @@ def get_objects(departments=None):
 
     if not departments:
         objects = requests.get(url)
-        return objects
+        return objects.json()
     
     first = 1
     i = 0
@@ -42,7 +42,7 @@ def get_objects(departments=None):
         i += 1
 
     objects = requests.get(url)
-    return objects
+    return objects.json()
 
 
 
