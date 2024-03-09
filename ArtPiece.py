@@ -7,24 +7,32 @@ def get_object(objectID):
     return url
 
 # takes departments as an array of integers, if no department is specified, return all
-def get_objects(departments):
+def get_objects(departments=None):
 
     url = ROOT_URL + "/public/collection/v1/objects"
 
     if not departments:
         return url
     
-    for i in range(len(departments)):
-        if i == 0:
-            url = url + f"?departmentIds={departments[i]}"
+    first = 1
+    i = 0
+    while i < len(departments):
+        # not a valid departmentId
+        if departments[i] < 1 or departments[i] > 21:
+            i += 1
+            continue
 
+        if first:
+            url = url + f"?departmentIds={departments[i]}"
+            first = 0
+        
         else:
             url = url + f"|{departments[i]}"
 
+        i += 1
+
     return url
 
-
-print(get_objects([3,4, 5]))
-
+print(get_objects())
 
 
