@@ -1,4 +1,6 @@
 import requests
+import random
+import string
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
 
@@ -44,8 +46,18 @@ def get_objects(departments=None):
     objects = requests.get(url)
     return objects.json()
 
+# returns objects which have images
+def get_objects_with_images():
+
+    url = ROOT_URL + "/public/collection/v1/search?hasImages=true&isHighlight=true&q="
+
+    # url must inlude a query to be able to go through, so choose any random letter to add as the query
+    letter = random.choice(string.ascii_lowercase)
+    url = url + letter
+
+    objects = requests.get(url)
+    return objects.json()
 
 if __name__ == "__main__":
     print("\n*** Welcome to the Hyperlink Metropolitan Museum ***\n")
 
-    
