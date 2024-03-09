@@ -3,7 +3,7 @@ import requests
 ROOT_URL = "https://collectionapi.metmuseum.org"
 
 # returns object, returns None if objectID is invalid
-def get_art_object(objectID):
+def get_art_object(objectID=45734):
     
     url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
 
@@ -45,4 +45,7 @@ def get_objects(departments=None):
     return objects.json()
 
 
+if __name__ == "__main__":
+    print("\n*** Welcome to the Hyperlink Metropolitan Museum ***\n")
 
+    
