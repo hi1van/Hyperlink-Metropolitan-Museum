@@ -10,9 +10,9 @@ def get_object(objectID):
     object = requests.get(url)
 
     if object.status_code == 200:
-        return None
-    else:
         return object
+    else:
+        return None
 
 # returns all objects in specified departments
 # takes departments as an array of integers, if no department is specified, return all
