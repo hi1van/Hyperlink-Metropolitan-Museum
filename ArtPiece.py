@@ -44,6 +44,5 @@ def get_objects(departments=None):
     objects = requests.get(url)
     return objects
 
-print(get_objects([1]).json())
 
 
