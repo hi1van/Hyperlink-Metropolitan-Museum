@@ -22,23 +22,32 @@ def hyperMuseum():
 
     art_object = get_art_object(objectID)
 
-    if not art_object or "primaryImageSmall" not in art_object:
+    if not art_object or "primaryImage" not in art_object:
         return "Image not found", 404
 
-    image = art_object["primaryImageSmall"]
+    image = art_object["primaryImage"]
     artist = art_object["artistDisplayName"]
     artist_bio = art_object["artistDisplayBio"]
     artwork_date = art_object["objectDate"]
     medium = art_object["medium"]
     dimensions = art_object["dimensions"]
-    city_country = art_object["city"] + ", " + art_object["country"]
     department = art_object["department"]
     object_name = art_object["objectName"]
     title = art_object["title"]
+    period = art_object["period"]
     
     return render_template(
         "hyperMuseum.html",
-        image = image
+        image = image,
+        artist = artist,
+        artist_bio = artist_bio,
+        artwork_date = artwork_date,
+        medium = medium,
+        dimensions = dimensions,
+        department = department,
+        object_name = object_name,
+        title = title,
+        period = period,
     )
 
 if __name__ == "__main__":

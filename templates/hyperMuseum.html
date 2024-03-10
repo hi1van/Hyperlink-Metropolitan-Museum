@@ -7,7 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
 </head>
 <body>
-    <img src="{{ image }}" alt="Test">
-    
+    <div class="display_container">
+        <h2>{{ title }}, <i>{{ artwork_date }}</i></h2>
+        <div class="art_artist_panel">
+            <img src="{{ image }}" alt="Image not found!">
+            <div class="artist_panel">
+                <h3>{{ artist }}</h3>
+                <h4>{{ artist_bio }}</h4>
+                <h4>{{ period }}</h4>
+            </div>
+        </div>
+
+        <div class="art_panel">
+            <h5>{{ object_name }}, {{ medium }}</h5>
+            <h5>{{ dimensions }}</h5>
+            <h5>{{ department }}</h5>
+        </div>
+        
+        <a href="/hyperMuseum" class="no-decoration">
+            <button class="next_button">Next Art Piece</button>
+        </a>
+    </div>
 </body>
 </html>

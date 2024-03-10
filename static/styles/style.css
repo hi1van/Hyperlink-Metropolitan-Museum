@@ -1,4 +1,4 @@
-.container {
+.index_container {
     display: inline-flex;
     height: 100vh;
     padding: 0px 215px 0px 216px;
@@ -6,6 +6,16 @@
     justify-content: center;
     align-items: center;
     gap: 50px;
+}
+
+.display_container {
+    display: inline-flex;
+    height: 100vh;
+    padding: 0px 124px 100px 117px;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    gap: 20px;
 }
 
 body {
@@ -47,4 +57,99 @@ h1 {
 
 .no-decoration {
     text-decoration: none;
+}
+
+h2 {
+    color: #000;
+    font-family: Garamond;
+    font-size: 58.103px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+h3 {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 34.998px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 25.665px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+h5 {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 20.249px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.next_button {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 28.332px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    padding: 15px 33px; /* Add padding to the button for better appearance */
+    background-color: #9D2933; /* Set the background color to your desired color */
+    border: none; /* Remove border */
+    border-radius: 11px;
+    cursor: pointer; /* Add a pointer cursor on hover for better user interaction */
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.next_button:hover {
+    background-color: #C53440; /* Change background color on hover */
+}
+
+.artist_panel {
+    border-radius: 10px;
+    background: #EEEAE4;
+    display: inline-flex;
+    padding: 28px 39px 28px 39px;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    gap: 10px;
+}
+
+.art_panel {
+    border-radius: 10px;
+    background: #EEEAE4;
+    display: inline-flex;
+    padding: 28px 39px 28px 39px;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    gap: 10px
+}
+
+img {
+    width: 600px;
+    height: auto;
+}
+
+.art_artist_panel {
+    display: flex;
+    gap: 95px;
 }
