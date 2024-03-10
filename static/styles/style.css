@@ -40,19 +40,19 @@ h1 {
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-    margin: auto; /* Center horizontally */
-    display: block; /* Ensures margin: auto works */
-    padding: 15px 33px; /* Add padding to the button for better appearance */
-    background-color: #9D2933; /* Set the background color to your desired color */
-    border: none; /* Remove border */
+    margin: auto;
+    display: block;
+    padding: 15px 33px;
+    background-color: #9D2933;
+    border: none;
     border-radius: 11px;
-    cursor: pointer; /* Add a pointer cursor on hover for better user interaction */
+    cursor: pointer;
     transition: background-color 0.3s;
     text-decoration: none;
   }
 
 .button-styled:hover {
-    background-color: #C53440; /* Change background color on hover */
+    background-color: #C53440;
   }
 
 .no-decoration {
@@ -111,17 +111,17 @@ h5 {
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-    padding: 15px 33px; /* Add padding to the button for better appearance */
-    background-color: #9D2933; /* Set the background color to your desired color */
-    border: none; /* Remove border */
+    padding: 15px 33px;
+    background-color: #9D2933;
+    border: none;
     border-radius: 11px;
-    cursor: pointer; /* Add a pointer cursor on hover for better user interaction */
+    cursor: pointer;
     transition: background-color 0.3s;
     text-decoration: none;
 }
 
 .next_button:hover {
-    background-color: #C53440; /* Change background color on hover */
+    background-color: #C53440;
 }
 
 .artist_panel {

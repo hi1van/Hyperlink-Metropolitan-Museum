@@ -4,21 +4,28 @@ import string
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
 
-# returns object, returns None if objectID is invalid
 def get_art_object(objectID=45734):
+    """
+    takes a unique object ID as input 
+    returns an art object in json format. returns None if object ID is invalid
+    """
     
     url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
 
     art_object = requests.get(url)
 
+    # if the art object is found
     if art_object.status_code == 200:
         return art_object.json()
     else:
         return None
 
-# returns all objects in specified departments
-# takes departments as an array of integers, if no department is specified, return all
 def get_objects(departments=None):
+    """
+    takes an array of departmentID(s) as input
+    returns all objects in the specified departments
+    returns all objects if no department/no valid department is given
+    """
 
     url = ROOT_URL + "/public/collection/v1/objects"
 
@@ -46,8 +53,10 @@ def get_objects(departments=None):
     objects = requests.get(url)
     return objects.json()
 
-# returns objects which have images
 def get_objects_with_images():
+    """
+    returns all objects with images in json format
+    """
 
     url = ROOT_URL + "/public/collection/v1/search?hasImages=true&isHighlight=true&q="
 

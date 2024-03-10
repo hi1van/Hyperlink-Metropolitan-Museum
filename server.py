@@ -8,15 +8,19 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index')
 def index():
-    
     return render_template("index.html")
 
 @app.route('/hyperMuseum')
 def hyperMuseum():
+    """
+    renders an art display page
+    """
 
     objects = get_objects_with_images()
+    # get the total number of objects
     n_objects = objects["total"]
 
+    # choose a random art piece
     n = random.randint(0, n_objects - 1)
     objectID = objects["objectIDs"][n]
 
