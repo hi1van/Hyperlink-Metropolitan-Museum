@@ -5,25 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
     <div class="display_container">
         <h2>{{ title }}, <i>{{ artwork_date }}</i></h2>
         <div class="art_artist_panel">
             <img src="{{ image }}" alt="Image not found!">
-            <div class="artist_panel">
-                <h3>{{ artist }}</h3>
-                <h4>{{ artist_bio }}</h4>
-                <h4>{{ period }}</h4>
+            <div>
+                <div class="artist_panel">
+                    <h3>{{ artist or 'Artist Unknown' }}</h3>
+                    <h4>{{ artist_bio }}</h4>
+                    <h4>{{ period }}</h4>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="art_panel">
+                <h5>{{ object_name }}, {{ medium }}</h5>
+                <h5>{{ dimensions }}</h5>
+                <h5>{{ department }}</h5>
             </div>
         </div>
 
-        <div class="art_panel">
-            <h5>{{ object_name }}, {{ medium }}</h5>
-            <h5>{{ dimensions }}</h5>
-            <h5>{{ department }}</h5>
-        </div>
-        
         <a href="/hyperMuseum" class="no-decoration">
             <button class="next_button">Next Art Piece</button>
         </a>

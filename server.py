@@ -22,10 +22,10 @@ def hyperMuseum():
 
     art_object = get_art_object(objectID)
 
-    if not art_object or "primaryImage" not in art_object:
+    if not art_object or "primaryImageSmall" not in art_object:
         return "Image not found", 404
 
-    image = art_object["primaryImage"]
+    image = art_object["primaryImageSmall"]
     artist = art_object["artistDisplayName"]
     artist_bio = art_object["artistDisplayBio"]
     artwork_date = art_object["objectDate"]
