@@ -1,6 +1,6 @@
 Ever wanted to visit the world renowned Metropolitan Museum of Art?
 
-Well today and any day is your lucky day!
+Well today __or__ any day is your lucky day!
 
 
 The Hyperlink Metropolitan Museum is designed so that you can get lost in the endless exhibitions of the MET. In real life, it is easy to get lost in the countless rooms of art displays, 
