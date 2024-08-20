@@ -3,6 +3,7 @@ import random
 import string
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
+N_DEPARTMENTS = 21
 
 def get_art_object(objectID=45734):
     """
@@ -17,8 +18,10 @@ def get_art_object(objectID=45734):
     # if the art object is found
     if art_object.status_code == 200:
         return art_object.json()
-    else:
-        return None
+
+    # else return None object
+    return None
+
 
 def get_objects(departments=None):
     """
@@ -29,21 +32,22 @@ def get_objects(departments=None):
 
     url = ROOT_URL + "/public/collection/v1/objects"
 
+    # if no department is specified then just return all
     if not departments:
         objects = requests.get(url)
         return objects.json()
     
-    first = 1
+    first = True
     i = 0
     while i < len(departments):
         # not a valid departmentId
-        if departments[i] < 1 or departments[i] > 21:
+        if departments[i] <= 0 or departments[i] > N_DEPARTMENTS:
             i += 1
             continue
 
         if first:
             url = url + f"?departmentIds={departments[i]}"
-            first = 0
+            first = False
         
         else:
             url = url + f"|{departments[i]}"
@@ -51,11 +55,13 @@ def get_objects(departments=None):
         i += 1
 
     objects = requests.get(url)
+
     return objects.json()
+
 
 def get_objects_with_images():
     """
-    returns all objects with images in json format
+    returns objects with images in json format using a random query letter
     """
 
     url = ROOT_URL + "/public/collection/v1/search?hasImages=true&isHighlight=true&q="
@@ -66,6 +72,7 @@ def get_objects_with_images():
 
     objects = requests.get(url)
     return objects.json()
+
 
 if __name__ == "__main__":
     print("\n*** Welcome to the Hyperlink Metropolitan Museum ***\n")
