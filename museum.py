@@ -8,7 +8,8 @@ N_DEPARTMENTS = 21
 def get_art_object(objectID=45734):
     """
     takes a unique object ID as input 
-    returns an art object in json format. returns None if object ID is invalid
+    returns an art object in json format
+    returns None if object ID is invalid
     """
     
     url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
@@ -72,6 +73,22 @@ def get_objects_with_images():
 
     objects = requests.get(url)
     return objects.json()
+
+
+def get_random_object_with_image_ID():
+    """
+    returns the ID of a random object with an image
+    """
+
+    objects_with_images = get_objects_with_images()
+    # get the total number of objects
+    n_objects = objects_with_images["total"]
+
+    # choose a random art piece within range
+    n = random.randint(0, n_objects - 1)
+    objectID = objects_with_images["objectIDs"][n]
+
+    return objectID
 
 
 if __name__ == "__main__":

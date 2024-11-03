@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from waitress import serve
 from museum import *
-import random
+from artObject import *
 
 app = Flask(__name__)
 
@@ -19,43 +19,27 @@ def hyperMuseum():
     Renders an art display page
     """
 
-    objects = get_objects_with_images()
-    # get the total number of objects
-    n_objects = objects["total"]
-
-    # choose a random art piece within range
-    n = random.randint(0, n_objects - 1)
-    objectID = objects["objectIDs"][n]
-
+    objectID = get_random_object_with_image_ID()
     art_object = get_art_object(objectID)
 
     # invalid return object
     if not art_object or "primaryImageSmall" not in art_object:
         return "Image not found", 404
-
-    image = art_object["primaryImageSmall"]
-    artist = art_object["artistDisplayName"]
-    artist_bio = art_object["artistDisplayBio"]
-    artwork_date = art_object["objectDate"]
-    medium = art_object["medium"]
-    dimensions = art_object["dimensions"]
-    department = art_object["department"]
-    object_name = art_object["objectName"]
-    title = art_object["title"]
-    period = art_object["period"]
+    
+    art_object = artObject(art_object)
     
     return render_template(
         "hyperMuseum.html",
-        image = image,
-        artist = artist,
-        artist_bio = artist_bio,
-        artwork_date = artwork_date,
-        medium = medium,
-        dimensions = dimensions,
-        department = department,
-        object_name = object_name,
-        title = title,
-        period = period,
+        image = art_object.image,
+        artist = art_object.artist,
+        artist_bio = art_object.artist_bio,
+        artwork_date = art_object.artwork_date,
+        medium = art_object.medium,
+        dimensions = art_object.dimensions,
+        department = art_object.department,
+        object_name = art_object.object_name,
+        title = art_object.title,
+        period = art_object.period,
     )
 
 if __name__ == "__main__":
