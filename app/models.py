@@ -38,8 +38,8 @@ class User(db.Model):
 class Art(db.Model):
     __tablename__ = "Art"
 
-    id = db.column(db.Integer, primary_key=True, autoincrement=True)
-    objectID = db.column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    objectID = db.Column(db.Integer, nullable=False)
     primaryImage = db.Column(db.String(), nullable=False)
 
     favourited_by = db.relationship('User', secondary=user_art_favourites, back_populates='favourites')
@@ -54,3 +54,9 @@ class Art(db.Model):
 
     def __repr__(self):
         return f"<Art {self.objectAPI_ID}>"
+    
+    def to_dict(self):
+        return {
+            'objectID': self.objectID,
+            'primaryImage': self.primaryImage           
+        }
