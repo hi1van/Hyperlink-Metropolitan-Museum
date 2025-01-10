@@ -1,9 +1,15 @@
 import requests
 import random
 import string
+from .config import Config
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import sessionmaker
+from .models import Art
+from .artObject import artObject
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
 N_DEPARTMENTS = 21
+DATABASE_URI = Config.SQLALCHEMY_DATABASE_URI
 
 def get_art_object(objectID=45734):
     """
@@ -11,15 +17,40 @@ def get_art_object(objectID=45734):
     returns an art object in json format
     returns None if object ID is invalid
     """
-    
-    url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
+    # search for the art object in the database first
+    engine = create_engine(DATABASE_URI)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-    art_object = requests.get(url)
+    # query to fetch an art object with given objectID
+    art_object = session.query(Art).filter(Art.objectID == objectID).first()
 
-    # if the art object is found
-    if art_object.status_code == 200:
-        return art_object.json()
+    if art_object:
+        session.close()
+        print("Retrieved via the database")
+        return art_object
+    else:
+        # fall back and add to the database
+        url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
 
+        art_object = requests.get(url)
+
+        # if the art object is found add to database and return
+        if art_object.status_code == 200:
+            artObject = artObject.json()
+            art_instance = Art(objectID=art_object["objectID"], primaryImage=art_object["primaryImageSmall"], \
+                            artist=art_object["artistDisplayName"], artist_bio=art_object["artistDisplayBio"], \
+                            artwork_date=art_object["objectDate"], medium=art_object["medium"], \
+                            dimensions=art_object["dimensions"], department=art_object["department"], \
+                            object_name=art_object["objectName"], title=art_object["title"], \
+                            period=art_object["period"])
+            
+            session.add(art_instance)
+            session.commit()
+            session.close()
+            return art_instance
+
+    session.close()
     # else return None object
     return None
 

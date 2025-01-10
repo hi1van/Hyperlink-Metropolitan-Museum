@@ -25,14 +25,14 @@ def hyperMuseum():
     art_object = get_art_object(objectID)
 
     # invalid return object
-    if not art_object or "primaryImageSmall" not in art_object:
+    if art_object is None:
         return "Image not found", 404
     
-    art_object = artObject(art_object)
+    # art_object = artObject(art_object)
     
     return render_template(
         "hyperMuseum.html",
-        image = art_object.image,
+        image = art_object.primaryImage,
         artist = art_object.artist,
         artist_bio = art_object.artist_bio,
         artwork_date = art_object.artwork_date,

@@ -1,7 +1,7 @@
 class artObject:
 
     def __init__(self, art_object):
-        self.image = art_object["primaryImageSmall"]
+        self.primaryImage = art_object["primaryImageSmall"]
         self.artist = art_object["artistDisplayName"]
         self.artist_bio = art_object["artistDisplayBio"]
         self.artwork_date = art_object["objectDate"]
