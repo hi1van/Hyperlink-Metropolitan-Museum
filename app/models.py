@@ -41,19 +41,38 @@ class Art(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     objectID = db.Column(db.Integer, nullable=False)
     primaryImage = db.Column(db.String(), nullable=False)
+    artist = db.Column(db.String(), nullable=True)
+    artist_bio = db.Column(db.String(), nullable=True)
+    artwork_date = db.Column(db.String(), nullable=True)
+    medium = db.Column(db.String(), nullable=True)
+    dimensions = db.Column(db.String(), nullable=True)
+    department = db.Column(db.String(), nullable=True)
+    object_name = db.Column(db.String(), nullable=True)
+    title = db.Column(db.String(), nullable=True)
+    period = db.Column(db.String(), nullable=True)
+
 
     favourited_by = db.relationship('User', secondary=user_art_favourites, back_populates='favourites')
 
-    def __init__(self, objectID, primaryImage):
+    def __init__(self, objectID, primaryImage, artist, artist_bio, artwork_date, medium, dimensions, department, object_name, title, period):
         self.objectID = objectID
         self.primaryImage = primaryImage
+        self.artist = artist
+        self.artist_bio = artist_bio
+        self.artwork_date = artwork_date
+        self.medium = medium
+        self.dimensions = dimensions
+        self.department = department
+        self.object_name = object_name
+        self.title = title
+        self.period = period
 
     def get_by_objectID(objectID):        
         db_objectID = Art.query.filter(Art.objectID == objectID).first()
         return db_objectID  
 
     def __repr__(self):
-        return f"<Art {self.objectAPI_ID}>"
+        return f"<Art {self.objectID}>"
     
     def to_dict(self):
         return {
