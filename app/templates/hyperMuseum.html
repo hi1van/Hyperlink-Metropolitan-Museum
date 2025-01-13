@@ -9,14 +9,16 @@
 </head>
 <body>
     <div class="display_container">
-        <h2>{{ title }}, <i>{{ artwork_date }}</i></h2>
+        <h2>
+            <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
+        </h2>
         <div class="art_artist_panel">
             <img src="{{ image }}" alt="Image not found!">
             <div>
                 <div class="artist_panel">
-                    <h3>{{ artist or 'Artist Unknown' }}</h3>
+                    <h3><a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a></h3>
                     <h4>{{ artist_bio }}</h4>
-                    <h4>{{ period }}</h4>
+                    <h4><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
                 </div>
             </div>
 
@@ -24,7 +26,7 @@
 
         <div>
             <div class="art_panel">
-                <h5>{{ object_name }}, {{ medium }}</h5>
+                <h5>{{ object_name or 'Unnamed Object' }}, {{ medium }}</h5>
                 <h5>{{ dimensions }}</h5>
                 <h5>{{ department }}</h5>
             </div>
@@ -36,3 +38,32 @@
     </div>
 </body>
 </html>
+
+<script src="{{ url_for('static', filename='js/wikipedia_links.js') }}"></script>
+<script>
+    // function to set the Wikipedia link conditionally
+    function setWikipediaLink(elementId, textContent) {
+        fetchWikipediaLink(textContent).then((link) => {
+            const element = document.getElementById(elementId);
+            if (link) {
+                element.href = link;  // set the href to the Wikipedia link
+            } else {
+                element.removeAttribute("href");  // remove the href if no link is found
+                element.style.cursor = 'default';  // change cursor style to indicate it's not clickable
+            }
+        });
+    }
+
+    // Set the link for the artwork title
+    const artworkTitle = document.getElementById("art_title").textContent;
+    setWikipediaLink("art_title", artworkTitle);
+
+    // Set the link for the artist name
+    const artistName = document.getElementById("artist_name").textContent;
+    setWikipediaLink("artist_name", artistName);
+
+    // Set the link for the period
+    const period = document.getElementById("period").textContent;
+    setWikipediaLink("period", period);
+
+</script>
