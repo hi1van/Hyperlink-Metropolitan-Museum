@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hypmet.png') }}">
     <title>Hyperlink Metropolitan Museum</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
     <div class="display_container">
@@ -54,15 +59,13 @@
         });
     }
 
-    // Set the link for the artwork title
+    // set the link for the artwork title
     const artworkTitle = document.getElementById("art_title").textContent;
     setWikipediaLink("art_title", artworkTitle);
 
-    // Set the link for the artist name
     const artistName = document.getElementById("artist_name").textContent;
     setWikipediaLink("artist_name", artistName);
 
-    // Set the link for the period
     const period = document.getElementById("period").textContent;
     setWikipediaLink("period", period);
 

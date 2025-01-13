@@ -1,11 +1,26 @@
-.index_container {
-    display: inline-flex;
-    height: 100vh;
-    padding: 0px 215px 0px 216px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
+html, body {
+    height: 100%;  
+    margin: 0;  
+    background-color: #F1E1C8;
+}
+
+.page-container {
+    padding: 5%;
+}
+
+a.logo img{
+    width: 100px;
+    height: auto;
+}
+
+h1#welcome {
+    color: #000;
+    text-align: left;
+    font-family: Garamond;
+    font-size: 68px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .display_container {

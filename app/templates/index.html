@@ -3,16 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hypmet.png') }}">
     <title>Welcome | Hyperlink Metropolitan Museum</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
-    <div class="index_container">
-        <h1>Welcome to the Hyperlink Metropolitan Museum</h1> 
-        <a href="/hyperMuseum" class="no-decoration">
-            <button class="button-styled">Enter the Hyper Museum</button>
-        </a>
+    <div class="page-container">
+        <div class="columns">
+            <div class="column is-one-fifth">
+                <a class="logo" href="/index">
+                    <img src="{{ url_for('static', filename='images/hypmethigh.png') }}">
+                </a>
+            </div>
+        </div>
+        
+        <div class="columns" style="margin-top: 50px;">
+            <div class="column is-full">
+                <h1 id="welcome">Welcome to the</h1>
+                <h1 id="welcome">Hyperlink Metropolitan Museum</h1>
+            </div>
+        </div>
+
+        <div class="columns" style="margin-top: 30px;">
+            <div class="column is-full">
+                <a href="/hyperMuseum" class="no-decoration" style="margin-top: 30px;">
+                    <button class="button">Jump in</button>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

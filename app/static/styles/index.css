@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;  
+    margin: 0;  
+    background-color: #F1E1C8;
+}
+
+.page-container {
+    padding: 5%;
+}
+
+a.logo img{
+    width: 100px;
+    height: auto;
+}
+
+h1#welcome {
+    color: #000;
+    text-align: left;
+    font-family: Garamond;
+    font-size: 68px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+button.button {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: larger;
+    font-weight: 300;
+    background-color: #9D2933;
+    border-color: #9D2933;
+}
+
+button.button:hover {
+    background-color: #C53440;
+    border-color: #C53440;
+}
