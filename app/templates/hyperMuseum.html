@@ -9,37 +9,61 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/hyperMuseum.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
-    <div class="display_container">
-        <h2>
-            <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
-        </h2>
-        <div class="art_artist_panel">
-            <img src="{{ image }}" alt="Image not found!">
-            <div>
-                <div class="artist_panel">
-                    <h3><a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a></h3>
-                    <h4>{{ artist_bio }}</h4>
-                    <h4><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
+    <div class="page-container">
+        <div class="columns">
+            <a class="logo" style="margin-right: 30px;" href="/index">
+                <img src="{{ url_for('static', filename='images/hypmethigh.png') }}">
+            </a>
+            <div class="column is-flex is-align-items-center">
+                <a class="home" href="/index">
+                    Home
+                </a>
+            </div>
+        </div>
+        
+        <div class="columns">
+            <div class="column is-9">
+                <h2 class="art_title">
+                    <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
+                </h2>
+            </div>
+        </div>
+
+
+        <div class="columns">
+            <div class="column is-narrow">
+                <img src="{{ image }}" alt="Image not found!">
+            </div>
+            <div class="column is-narrow">
+                <div id="panel_padding">
+                    <div class="artist_panel">
+                        <h3 class="name"><a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a></h3>
+                        <h4 class="desc">{{ artist_bio }}</h4>
+                        <h4 class="desc"><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <div>
-            <div class="art_panel">
-                <h5>{{ object_name or 'Unnamed Object' }}, {{ medium }}</h5>
-                <h5>{{ dimensions }}</h5>
-                <h5>{{ department }}</h5>
+        <div class="columns">
+            <div id="panel_padding">
+                <div class="art_panel">
+                    <h4 class="desc">{{ object_name or 'Unnamed Object' }}, {{ medium }}</h5>
+                    <h4 class="desc">{{ dimensions }}</h5>
+                    <h4 class="desc">{{ department }}</h5>
+                </div>
             </div>
         </div>
 
-        <a href="/hyperMuseum" class="no-decoration">
-            <button class="next_button">Next Art Piece</button>
-        </a>
+        <div class="columns" style="margin-top: 15px;">
+            <a href="/hyperMuseum" class="no-decoration">
+                <button class="button">Next Art Piece</button>
+            </a>
+        </div>
     </div>
 </body>
 </html>

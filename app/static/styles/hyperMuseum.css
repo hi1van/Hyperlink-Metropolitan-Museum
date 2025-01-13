@@ -1,0 +1,98 @@
+html, body {
+    height: auto;  
+    min-height: 100%;
+    margin: 0;  
+    background-color: #F1E1C8;
+}
+
+.page-container {
+    padding: 5%;
+}
+
+a.logo img{
+    width: 100px;
+    height: auto;
+}
+
+button.button {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: larger;
+    font-weight: 300;
+    background-color: #9D2933;
+    border-color: #9D2933;
+}
+
+button.button:hover {
+    background-color: #C53440;
+    border-color: #C53440;
+}
+
+a.home {
+    color:#000;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px; 
+    font-family: Garamond;
+    font-size: 30px;
+    align-items: center;
+}
+
+h2.art_title {
+    color: #000;
+    text-align: left;
+    font-family: Garamond;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 50px;
+}
+
+div.artist_panel {
+    background: #EEEAE4;
+    justify-content: left;
+    align-items: left;
+    color: #000;
+}
+
+div.art_panel {
+    background: #EEEAE4;
+    justify-content: left;
+    align-items: left;
+    color: #000;
+}
+
+div#panel_padding {
+    padding: 20px;
+    background-color: #EEEAE4;
+    border-radius: 10px;
+}
+
+h3.name {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+h4.desc {
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+a {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px; 
+}
+
+a:hover {
+    color: #6f6f6f !important;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px; 
+}
