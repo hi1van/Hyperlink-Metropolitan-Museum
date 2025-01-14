@@ -15,9 +15,32 @@ body {
     padding: 5%;
 }
 
-a.logo img{
+a.logo img {
     width: 100px;
     height: auto;
+}
+
+.hover-image {
+    width: 100px;
+    height: auto;
+    transition: opacity 0.7s ease;
+    position: absolute;
+}
+
+.original {
+    opacity: 1;
+}
+
+.inverted {
+    opacity: 0;
+}
+
+a.logo:hover .original {
+    opacity: 0;
+}
+
+a.logo:hover .inverted {
+    opacity: 1;
 }
 
 button.button {
