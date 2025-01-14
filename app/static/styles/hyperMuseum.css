@@ -1,11 +1,17 @@
-html, body {
-    height: auto;  
+html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
     min-height: 100%;
-    margin: 0;  
     background-color: #F1E1C8;
+    display: flex;
+    flex-direction: column;
 }
 
 .page-container {
+    flex-grow: 1;
     padding: 5%;
 }
 
