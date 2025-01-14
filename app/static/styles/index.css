@@ -20,6 +20,29 @@ a.logo img{
     height: auto;
 }
 
+.hover-image {
+    width: 100px;
+    height: auto;
+    transition: opacity 0.7s ease;
+    position: absolute;
+}
+
+.original {
+    opacity: 1;
+}
+
+.inverted {
+    opacity: 0;
+}
+
+a.logo:hover .original {
+    opacity: 0;
+}
+
+a.logo:hover .inverted {
+    opacity: 1;
+}
+
 h1#welcome {
     color: #000;
     text-align: left;

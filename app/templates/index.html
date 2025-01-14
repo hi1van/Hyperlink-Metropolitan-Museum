@@ -15,9 +15,18 @@
 <body>
     <div class="page-container">
         <div class="columns">
-            <div class="column is-one-fifth">
+            <div class="column is-narrow" style="margin-right: 30px; min-width: 100px; min-height: 100px;">
                 <a class="logo" href="/index">
-                    <img src="{{ url_for('static', filename='images/hypmethigh.png') }}">
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethigh.png') }}" 
+                        alt="Logo"
+                        class="hover-image original"
+                    >
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethighinvert.png') }}" 
+                        alt="Logo Inverted"
+                        class="hover-image inverted"
+                    >
                 </a>
             </div>
         </div>
