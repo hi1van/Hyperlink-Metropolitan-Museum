@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
 from .museum import *
-from .artObject import *
 
 main = Blueprint('main', __name__)
 
@@ -25,12 +24,7 @@ def hyperMuseum():
 
     # invalid return object
     if art_object is None:
-        return "Object not found", 404
-    
-    # print(f"image link: {art_object.primaryImage}")
-    # print("link length =", len(art_object.primaryImage))
-    
-    # art_object = artObject(art_object)
+        return "Object not found", 404  
     
     return render_template(
         "hyperMuseum.html",

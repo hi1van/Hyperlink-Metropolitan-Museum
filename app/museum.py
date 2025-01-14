@@ -5,7 +5,6 @@ from .config import Config
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from .models import Art
-from .artObject import artObject
 
 ROOT_URL = "https://collectionapi.metmuseum.org"
 N_DEPARTMENTS = 21
