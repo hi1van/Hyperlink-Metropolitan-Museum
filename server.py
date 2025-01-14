@@ -1,11 +1,14 @@
-from waitress import serve
+# from waitress import serve // for local development
 from app import create_app, db
+from flask_migrate import Migrate
 
 app = create_app()
+migrate = Migrate(app, db)
 
-# create database tables if they don't exist
-with app.app_context():
-    db.create_all
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000)
+
+# for local development
+# if __name__ == "__main__":
+#     serve(app, host="0.0.0.0", port=8000)
