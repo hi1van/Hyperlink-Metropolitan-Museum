@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
 from .museum import *
-from .artObject import *
 
 main = Blueprint('main', __name__)
 
@@ -21,14 +20,11 @@ def hyperMuseum():
     Renders an art display page
     """
 
-    objectID = get_random_object_with_image_ID()
-    art_object = get_art_object(objectID)
+    art_object = get_art_object()
 
     # invalid return object
     if art_object is None:
-        return "Image not found", 404
-    
-    # art_object = artObject(art_object)
+        return "Object not found", 404  
     
     return render_template(
         "hyperMuseum.html",
