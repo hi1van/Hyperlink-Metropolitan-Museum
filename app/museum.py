@@ -11,47 +11,70 @@ ROOT_URL = "https://collectionapi.metmuseum.org"
 N_DEPARTMENTS = 21
 DATABASE_URI = Config.SQLALCHEMY_DATABASE_URI
 
-def get_art_object(objectID=45734):
+def get_art_object():
     """
     takes a unique object ID as input 
     returns an art object in json format
     returns None if object ID is invalid
     """
+
+    objects_with_images = get_objects_with_images()
+
     # search for the art object in the database first
     engine = create_engine(DATABASE_URI)
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query to fetch an art object with given objectID
-    art_object = session.query(Art).filter(Art.objectID == objectID).first()
+    loop_limit = 10
+    loop_counter = 0
 
-    if art_object:
-        session.close()
-        print("Retrieved via the database")
-        return art_object
-    else:
-        # fall back and add to the database
-        url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
+    # retrieve objects until one with an image is found
+    # (some objects in the API described as hasImage don't have a primary image oddly)
+    while loop_counter < loop_limit:
+        loop_counter += 1
 
-        art_object = requests.get(url)
+        # select an image
+        objectID = get_random_object_with_image_ID(objects_with_images)
+        
+        # query to fetch an art object with given objectID
+        art_object = session.query(Art).filter(Art.objectID == objectID).first()
 
-        # if the art object is found add to database and return
-        if art_object.status_code == 200:
-            artObject = artObject.json()
-            art_instance = Art(objectID=art_object["objectID"], primaryImage=art_object["primaryImageSmall"], \
-                            artist=art_object["artistDisplayName"], artist_bio=art_object["artistDisplayBio"], \
-                            artwork_date=art_object["objectDate"], medium=art_object["medium"], \
-                            dimensions=art_object["dimensions"], department=art_object["department"], \
-                            object_name=art_object["objectName"], title=art_object["title"], \
-                            period=art_object["period"])
-            
-            session.add(art_instance)
-            session.commit()
+        if art_object:
+            # doesn't have a link, try again
+            if len(art_object.primaryImage) == 0:
+                continue
+
             session.close()
-            return art_instance
+            print("Object retrieved via the database")
+            return art_object
+        else:
+            # fall back and add to the database
+            url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
+
+            art_object = requests.get(url)
+
+            # if the art object is found add to database and return
+            if art_object.status_code == 200:
+                art_object = art_object.json()
+
+                # doesn't have a link, try again
+                if len(art_object["primaryImageSmall"]) == 0:
+                    continue
+
+                art_instance = Art(objectID=art_object["objectID"], primaryImage=art_object["primaryImageSmall"], \
+                                artist=art_object["artistDisplayName"], artist_bio=art_object["artistDisplayBio"], \
+                                artwork_date=art_object["objectDate"], medium=art_object["medium"], \
+                                dimensions=art_object["dimensions"], department=art_object["department"], \
+                                object_name=art_object["objectName"], title=art_object["title"], \
+                                period=art_object["period"])
+                
+                session.add(art_instance)
+                session.commit()
+                session.close()
+                return art_instance
 
     session.close()
-    # else return None object
+    # return None object if unsuccessful
     return None
 
 
@@ -106,12 +129,11 @@ def get_objects_with_images():
     return objects.json()
 
 
-def get_random_object_with_image_ID():
+def get_random_object_with_image_ID(objects_with_images):
     """
     returns the ID of a random object with an image
     """
 
-    objects_with_images = get_objects_with_images()
     # get the total number of objects
     n_objects = objects_with_images["total"]
 

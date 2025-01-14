@@ -21,12 +21,14 @@ def hyperMuseum():
     Renders an art display page
     """
 
-    objectID = get_random_object_with_image_ID()
-    art_object = get_art_object(objectID)
+    art_object = get_art_object()
 
     # invalid return object
     if art_object is None:
-        return "Image not found", 404
+        return "Object not found", 404
+    
+    # print(f"image link: {art_object.primaryImage}")
+    # print("link length =", len(art_object.primaryImage))
     
     # art_object = artObject(art_object)
     
