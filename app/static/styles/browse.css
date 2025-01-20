@@ -54,6 +54,17 @@ button.button.is-unselected {
     margin-bottom: 8px;
 }
 
+button.button.is-selected {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: small;
+    font-weight: 300;
+    background-color: #9D2933;
+    border-color: #9D2933;
+    margin-right: 12px;
+    margin-bottom: 8px;
+}
+
 button.button.is-unselected:hover {
     background-color: #C53440;
     border-color: #C53440;
@@ -92,4 +103,25 @@ a:hover {
     text-decoration: underline;
     text-decoration-thickness: 1.5px;
     text-underline-offset: 4px; 
+}
+
+button.navigation {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: small;
+    font-weight: 300;
+    background-color: #9D2933;
+    border-color: #9D2933;
+    margin-right: 12px;
+}
+
+button.navigation:hover {
+    background-color: #C53440;
+    border-color: #C53440;
+}
+
+h3.page-text {
+    font-size: small;
+    font-weight: 300;
+    color: #000;
 }
