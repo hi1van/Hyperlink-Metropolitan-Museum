@@ -66,3 +66,10 @@ button.button:hover {
     background-color: #C53440;
     border-color: #C53440;
 }
+
+h2.page-text {
+    font-size: larger;
+    font-weight: 300;
+    color: #000;
+    align-items: center;
+}

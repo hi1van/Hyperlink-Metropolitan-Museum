@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hypmet.png') }}">
+    <title>Hyperlink Metropolitan Museum</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/browse.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+</head>
+<body>
+    <div class="page-container">
+
+        <div class="columns">
+            <div class="column is-narrow" style="margin-right: 30px; min-width: 100px; min-height: 100px;">
+                <a class="logo" href="/index">
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethigh.png') }}" 
+                        alt="Logo"
+                        class="hover-image original"
+                    >
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethighinvert.png') }}" 
+                        alt="Logo Inverted"
+                        class="hover-image inverted"
+                    >
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center">
+                <a class="home" href="/index">
+                    Home
+                </a>
+            </div>
+        </div>
+
+
+        <div class="columns">
+            <div class="column">
+                <h2 class="browse_title">Browse by Department</h2>
+            </div>
+        </div>
+
+        <div class="columns is-multiline">
+            {% for department in departments %}
+            <div id="department-selection" class="column is-narrow">
+                <button class="button is-unselected department-button" 
+                        data-department="{{ department }}">
+                        {{ department }}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="pagination-controls-top" class="columns is-vcentered" style="margin-top: 20px;">
+        </div>
+
+        <div id="artwork-grid" class="columns is-multiline">
+        </div>
+
+        <div id="pagination-controls-bottom" class="columns is-vcentered">
+        </div>
+    </div>
+</body>
+<footer>
+</footer>
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const departmentButtons = document.querySelectorAll('.department-button');
+    const artworkGrid = document.getElementById('artwork-grid');
+    const paginationControlsBottom = document.getElementById('pagination-controls-bottom');
+    const paginationControlsTop = document.getElementById('pagination-controls-top');
+
+    // fetch and display artworks
+    const loadArtworks = (department, page = 1) => {
+        console.log("commence fetching artworks");
+        fetch(`/api/departments/${department}/artworks?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                // clear the grid and pagination controls
+                artworkGrid.innerHTML = '';
+                
+                // populate the artwork grid
+                data.artworks.forEach(artwork => {
+                    const artworkDiv = document.createElement('div');
+                    artworkDiv.classList.add('column', 'is-one-third', 'frame');
+                    artworkDiv.innerHTML = `
+                        <div class="frame-image">
+                            <img class="artwork-image" src="${artwork.image}" alt="${artwork.title}">
+                        </div>
+                    `;
+                    artworkGrid.appendChild(artworkDiv);
+                });
+
+                // create and display pagination controls
+                createPaginationControls(department, page, data.total_pages);
+
+            })
+            .catch(error => console.error('Error fetching artworks:', error));
+    };
+
+    const createPaginationControls = (department, page, totalPages) => {
+        // add pagination controls
+        const pagNav = document.createElement('div');
+        pagNav.classList.add("column", "is-narrow");
+
+        if (page != 1) {
+            const first = document.createElement('button');
+            first.classList.add("button", "navigation");
+            first.textContent = "First";
+            first.addEventListener('click', () => loadArtworks(department, 1));
+            pagNav.appendChild(first);
+
+            const prev = document.createElement('button');
+            prev.classList.add("button", "navigation");
+            prev.textContent = "Previous";
+            prev.addEventListener('click', () => loadArtworks(department, page - 1));
+            pagNav.appendChild(prev);
+        }
+
+        if (page == 1) {
+            const first = document.createElement('button');
+            first.classList.add("button", "navigation-unavailable");
+            first.textContent = "First";
+            pagNav.appendChild(first);
+
+            const prev = document.createElement('button');
+            prev.classList.add("button", "navigation-unavailable");
+            prev.textContent = "Previous";
+            pagNav.appendChild(prev);
+        }
+
+        if (page != totalPages) {
+            const next = document.createElement('button');
+            next.classList.add("button", "navigation");
+            next.textContent = "Next";
+            next.addEventListener('click', () => loadArtworks(department, page + 1));
+            pagNav.appendChild(next);
+
+            const last = document.createElement('button');
+            last.classList.add("button", "navigation");
+            last.textContent = "Last";
+            last.addEventListener('click', () => loadArtworks(department, totalPages));
+            pagNav.appendChild(last);
+        }
+
+        if (page == totalPages) {
+            const next = document.createElement('button');
+            next.classList.add("button", "navigation-unavailable");
+            next.textContent = "Next";
+            pagNav.appendChild(next);
+
+            const last = document.createElement('button');
+            last.classList.add("button", "navigation-unavailable");
+            last.textContent = "Last";
+            pagNav.appendChild(last);
+        }
+
+        const currPage = document.createElement('div');
+        currPage.classList.add("column");
+        currPage.innerHTML = `
+            <h3 class="page-text">
+                Page ${page} of ${totalPages}
+            </h3>  
+            `;
+        
+        
+        paginationControlsTop.innerHTML = '';
+        paginationControlsTop.appendChild(pagNav);
+        paginationControlsTop.appendChild(currPage);
+
+        // clone the elements to append them to the bottom container
+        const pagNavClone = pagNav.cloneNode(true);
+        const currPageClone = currPage.cloneNode(true);
+
+        paginationControlsBottom.innerHTML = '';
+        paginationControlsBottom.appendChild(pagNavClone);
+        paginationControlsBottom.appendChild(currPageClone);
+
+        // reattach event listeners to cloned elements
+        pagNavClone.querySelectorAll('.navigation').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const pageToLoad = event.target.textContent === "First" ? 1 :
+                                event.target.textContent === "Previous" ? page - 1 :
+                                event.target.textContent === "Next" ? page + 1 :
+                                totalPages;
+                loadArtworks(department, pageToLoad);
+            });
+        });
+    };
+
+    // add click event to department buttons
+    departmentButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const department = button.getAttribute('data-department');
+
+            departmentButtons.forEach(btn => {
+                btn.classList.remove("is-selected");
+                btn.classList.add("is-unselected");
+            });
+            
+            button.classList.remove("is-unselected");
+            button.classList.add("is-selected");
+
+            loadArtworks(department); // load artworks for the selected department
+        });
+    });
+});
+
+
+
+</script>

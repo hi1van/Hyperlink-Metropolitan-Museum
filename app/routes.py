@@ -1,8 +1,9 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
 from .museum import *
+from math import ceil
 
 main = Blueprint('main', __name__)
 
@@ -39,6 +40,50 @@ def hyperMuseum():
         title = art_object.title,
         period = art_object.period,
     )
+
+@main.route('/browse/departments')
+def browse_departments():
+
+    # gather all available distinct departments
+    departments = [row[0] for row in Art.query.with_entities(Art.department).distinct().all()]
+
+    return render_template(
+        "browse_departments.html",
+        departments=departments
+    )
+
+@main.route('/api/departments/<department>/artworks')
+def get_department_artworks(department):
+
+    # parameters for pagination
+    page = int(request.args.get('page', 1))
+    per_page = 15
+
+    # query artworks for the specified department
+    total_artworks = Art.query.filter_by(department=department).count()
+    artworks = Art.query.filter_by(department=department) \
+                        .offset((page - 1) * per_page) \
+                        .limit(per_page) \
+                        .all()
+    
+    # prepare data to return
+    artwork_data = [
+        {
+            "title": artwork.title,
+            "image": artwork.primaryImage,
+            "artist": artwork.artist
+        } for artwork in artworks
+    ]
+
+    total_pages = ceil(total_artworks / per_page)
+
+    return jsonify({
+        "artworks": artwork_data,
+        "total_pages": total_pages,
+        "current_page": page
+    })
+
+
 
 @main.route('/add_user', methods=['GET', 'POST'])
 def add_user():
