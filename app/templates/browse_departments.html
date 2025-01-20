@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hypmet.png') }}">
+    <title>Hyperlink Metropolitan Museum</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/browse.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+</head>
+<body>
+    <div class="page-container">
+
+        <div class="columns">
+            <div class="column is-narrow" style="margin-right: 30px; min-width: 100px; min-height: 100px;">
+                <a class="logo" href="/index">
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethigh.png') }}" 
+                        alt="Logo"
+                        class="hover-image original"
+                    >
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethighinvert.png') }}" 
+                        alt="Logo Inverted"
+                        class="hover-image inverted"
+                    >
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center">
+                <a class="home" href="/index">
+                    Home
+                </a>
+            </div>
+        </div>
+
+
+        <div class="columns">
+            <div class="column">
+                <h2 class="browse_title">Browse by Department</h2>
+            </div>
+        </div>
+
+        <div class="columns is-multiline">
+            {% for department in departments %}
+            <div class="is-narrow">
+                <button class="button is-unselected">{{ department }}</button>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</body>
+<footer>
+</footer>
+</html>

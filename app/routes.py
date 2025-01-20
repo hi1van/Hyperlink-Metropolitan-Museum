@@ -40,6 +40,19 @@ def hyperMuseum():
         period = art_object.period,
     )
 
+@main.route('/browse/departments')
+def browse_departments():
+
+    # gather all available distinct departments
+    departments = [row[0] for row in Art.query.with_entities(Art.department).distinct().all()]
+
+    return render_template(
+        "browse_departments.html",
+        departments=departments
+    )
+
+
+
 @main.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
