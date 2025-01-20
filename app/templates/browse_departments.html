@@ -173,12 +173,29 @@ document.addEventListener("DOMContentLoaded", () => {
             </h3>  
             `;
         
-        paginationControlsBottom.innerHTML = '';
-        paginationControlsBottom.appendChild(pagNav);
-        paginationControlsBottom.appendChild(currPage);
+        
         paginationControlsTop.innerHTML = '';
         paginationControlsTop.appendChild(pagNav);
         paginationControlsTop.appendChild(currPage);
+
+        // clone the elements to append them to the bottom container
+        const pagNavClone = pagNav.cloneNode(true);
+        const currPageClone = currPage.cloneNode(true);
+
+        paginationControlsBottom.innerHTML = '';
+        paginationControlsBottom.appendChild(pagNavClone);
+        paginationControlsBottom.appendChild(currPageClone);
+
+        // reattach event listeners to cloned elements
+        pagNavClone.querySelectorAll('.navigation').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const pageToLoad = event.target.textContent === "First" ? 1 :
+                                event.target.textContent === "Previous" ? page - 1 :
+                                event.target.textContent === "Next" ? page + 1 :
+                                totalPages;
+                loadArtworks(department, pageToLoad);
+            });
+        });
     };
 
     // add click event to department buttons
