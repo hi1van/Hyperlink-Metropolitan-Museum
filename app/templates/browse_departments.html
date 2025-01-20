@@ -90,12 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 // populate the artwork grid
                 data.artworks.forEach(artwork => {
                     const artworkDiv = document.createElement('div');
-                    artworkDiv.classList.add('column', 'is-narrow');
+                    artworkDiv.classList.add('column', 'is-one-third', 'frame');
                     artworkDiv.innerHTML = `
-                        <div class="frame">
-                            <div class="frame-image">
-                                <img src="${artwork.image}" alt="${artwork.title}">
-                            </div>
+                        <div class="frame-image">
+                            <img class="artwork-image" src="${artwork.image}" alt="${artwork.title}">
                         </div>
                     `;
                     artworkGrid.appendChild(artworkDiv);

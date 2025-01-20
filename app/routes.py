@@ -57,7 +57,7 @@ def get_department_artworks(department):
 
     # parameters for pagination
     page = int(request.args.get('page', 1))
-    per_page = 9
+    per_page = 15
 
     # query artworks for the specified department
     total_artworks = Art.query.filter_by(department=department).count()
