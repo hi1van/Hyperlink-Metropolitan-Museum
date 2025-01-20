@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hypmet.png') }}">
+    <title>Hyperlink Metropolitan Museum</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/hyperMuseum.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+</head>
+<body>
+    <div class="page-container">
+        <div class="columns">
+            <div class="column is-narrow" style="margin-right: 30px; min-width: 100px; min-height: 100px;">
+                <a class="logo" href="/index">
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethigh.png') }}" 
+                        alt="Logo"
+                        class="hover-image original"
+                    >
+                    <img 
+                        src="{{ url_for('static', filename='images/hypmethighinvert.png') }}" 
+                        alt="Logo Inverted"
+                        class="hover-image inverted"
+                    >
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center">
+                <a class="home" href="/index">
+                    Home
+                </a>
+            </div>
+        </div>
+        
+        <div class="columns">
+            <div class="column is-9">
+                <h2 class="art_title">
+                    <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
+                </h2>
+            </div>
+        </div>
+
+
+        <div class="columns">
+            <div class="column is-narrow">
+                <img src="{{ image }}" alt="Image not found!">
+            </div>
+            <div class="column is-narrow">
+                <div id="panel_padding">
+                    <div class="artist_panel">
+                        <h3 class="name"><a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a></h3>
+                        <h4 class="desc">{{ artist_bio }}</h4>
+                        <h4 class="desc"><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns">
+            <div id="panel_padding">
+                <div class="art_panel">
+                    <h4 class="desc">{{ object_name or 'Unnamed Object' }}, {{ medium }}</h5>
+                    <h4 class="desc">{{ dimensions }}</h5>
+                    <h4 class="desc">{{ department }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns" style="margin-top: 15px;">
+            <a href="javascript:history.back()" class="no-decoration">
+                <button class="button">Return</button>
+            </a>
+        </div>
+    </div>
+</body>
+<footer>
+</footer>
+</html>
+
+<script src="{{ url_for('static', filename='js/wikipedia_links.js') }}"></script>
+<script>
+    // function to set the Wikipedia link conditionally
+    function setWikipediaLink(elementId, textContent) {
+        fetchWikipediaLink(textContent).then((link) => {
+            const element = document.getElementById(elementId);
+            if (link) {
+                element.href = link;  // set the href to the Wikipedia link
+            } else {
+                element.removeAttribute("href");  // remove the href if no link is found
+                element.style.cursor = 'default';  // change cursor style to indicate it's not clickable
+            }
+        });
+    }
+
+    // set the link for the artwork title
+    const artworkTitle = document.getElementById("art_title").textContent;
+    setWikipediaLink("art_title", artworkTitle);
+
+    const artistName = document.getElementById("artist_name").textContent;
+    setWikipediaLink("artist_name", artistName);
+
+    const period = document.getElementById("period").textContent;
+    setWikipediaLink("period", period);
+
+</script>
