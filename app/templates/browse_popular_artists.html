@@ -36,25 +36,25 @@
                 </a>
             </div>
             <div class="column is-flex is-align-items-center">
-                <a class="home" href="/browse/popular_artists">
-                    Browse by Popular Artist
+                <a class="home" href="/browse/departments">
+                    Browse by Department
                 </a>
             </div>
         </div>
 
 
         <div class="columns">
-            <div class="column">
-                <h2 class="browse_title">Browse by Department</h2>
+            <div class="column is-narrow">
+                <h2 class="browse_title">Browse by Popular Artist</h2>
             </div>
         </div>
 
         <div class="columns is-multiline">
-            {% for department in departments %}
+            {% for artist in artists %}
             <div id="selection" class="column is-narrow">
-                <button class="button is-unselected department-button" 
-                        data-department="{{ department }}">
-                        {{ department }}
+                <button class="button is-unselected artist-button" 
+                        data-artist="{{ artist }}">
+                        {{ artist }}
                 </button>
             </div>
             {% endfor %}
@@ -76,15 +76,15 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const departmentButtons = document.querySelectorAll('.department-button');
+    const artistButtons = document.querySelectorAll('.artist-button');
     const artworkGrid = document.getElementById('artwork-grid');
     const paginationControlsBottom = document.getElementById('pagination-controls-bottom');
     const paginationControlsTop = document.getElementById('pagination-controls-top');
 
     // fetch and display artworks
-    const loadArtworks = (department, page = 1) => {
+    const loadArtworks = (artist, page = 1) => {
         console.log("commence fetching artworks");
-        fetch(`/api/departments/${department}/artworks?page=${page}`)
+        fetch(`/api/popular_artists/${artist}/artworks?page=${page}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -115,13 +115,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 // create and display pagination controls
-                createPaginationControls(department, page, data.total_pages);
+                createPaginationControls(artist, page, data.total_pages);
 
             })
             .catch(error => console.error('Error fetching artworks:', error));
     };
 
-    const createPaginationControls = (department, page, totalPages) => {
+    const createPaginationControls = (artist, page, totalPages) => {
         // add pagination controls
         const pagNav = document.createElement('div');
         pagNav.classList.add("column", "is-narrow");
@@ -130,13 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const first = document.createElement('button');
             first.classList.add("button", "navigation");
             first.textContent = "First";
-            first.addEventListener('click', () => loadArtworks(department, 1));
+            first.addEventListener('click', () => loadArtworks(artist, 1));
             pagNav.appendChild(first);
 
             const prev = document.createElement('button');
             prev.classList.add("button", "navigation");
             prev.textContent = "Previous";
-            prev.addEventListener('click', () => loadArtworks(department, page - 1));
+            prev.addEventListener('click', () => loadArtworks(artist, page - 1));
             pagNav.appendChild(prev);
         }
 
@@ -156,13 +156,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const next = document.createElement('button');
             next.classList.add("button", "navigation");
             next.textContent = "Next";
-            next.addEventListener('click', () => loadArtworks(department, page + 1));
+            next.addEventListener('click', () => loadArtworks(artist, page + 1));
             pagNav.appendChild(next);
 
             const last = document.createElement('button');
             last.classList.add("button", "navigation");
             last.textContent = "Last";
-            last.addEventListener('click', () => loadArtworks(department, totalPages));
+            last.addEventListener('click', () => loadArtworks(artist, totalPages));
             pagNav.appendChild(last);
         }
 
@@ -206,17 +206,17 @@ document.addEventListener("DOMContentLoaded", () => {
                                 event.target.textContent === "Previous" ? page - 1 :
                                 event.target.textContent === "Next" ? page + 1 :
                                 totalPages;
-                loadArtworks(department, pageToLoad);
+                loadArtworks(artist, pageToLoad);
             });
         });
     };
 
-    // add click event to department buttons
-    departmentButtons.forEach(button => {
+    // add click event to artist buttons
+    artistButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const department = button.getAttribute('data-department');
+            const artist = button.getAttribute('data-artist');
 
-            departmentButtons.forEach(btn => {
+            artistButtons.forEach(btn => {
                 btn.classList.remove("is-selected");
                 btn.classList.add("is-unselected");
             });
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
             button.classList.remove("is-unselected");
             button.classList.add("is-selected");
 
-            loadArtworks(department); // load artworks for the selected department
+            loadArtworks(artist); // load artworks for the selected artist
         });
     });
 });

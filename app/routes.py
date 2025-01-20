@@ -60,8 +60,9 @@ def get_department_artworks(department):
     per_page = 15
 
     # query artworks for the specified department
-    total_artworks = Art.query.filter_by(department=department).count()
+    total_artworks = Art.query.filter_by(department=department).distinct(Art.objectID).count()
     artworks = Art.query.filter_by(department=department) \
+                        .distinct(Art.objectID) \
                         .offset((page - 1) * per_page) \
                         .limit(per_page) \
                         .all()
@@ -69,6 +70,7 @@ def get_department_artworks(department):
     # prepare data to return
     artwork_data = [
         {
+            "id": artwork.objectID,
             "title": artwork.title,
             "image": artwork.primaryImage,
             "artist": artwork.artist
@@ -83,26 +85,95 @@ def get_department_artworks(department):
         "current_page": page
     })
 
+@main.route('/artwork/<objectID>')
+def get_artwork(objectID):
 
+    artwork = Art.query.filter_by(objectID=objectID).first()
 
-@main.route('/add_user', methods=['GET', 'POST'])
-def add_user():
-    if request.method == 'POST':
-        username = request.form['username']
-        new_user = User(username=username)
-        db.session.add(new_user)
-
-        try:
-            db.session.commit()
-        except SQLAlchemy.exc.IntegrityError as e:
-            if 'unique constraint' in str(e):
-                return "Username already exists. Please choose a different one.", 400
-
-        return f"User {username} added successfully!"
+    # invalid return object
+    if artwork is None:
+        return "Object not found", 404  
     
-    return '''
-        <form method="POST">
-            Username: <input type="text" name="username"><br>
-            <input type="submit" value="Add User">
-        </form>
-    '''
+    return render_template(
+        "artwork.html",
+        image = artwork.primaryImage,
+        artist = artwork.artist,
+        artist_bio = artwork.artist_bio,
+        artwork_date = artwork.artwork_date,
+        medium = artwork.medium,
+        dimensions = artwork.dimensions,
+        department = artwork.department,
+        object_name = artwork.object_name,
+        title = artwork.title,
+        period = artwork.period,
+    )
+
+@main.route('/browse/popular_artists')
+def browse_popular_artists():
+
+    # gather all available distinct departments
+    POPULAR_ARTISTS = ["Vincent van Gogh", "Leonardo da Vinci", "Rembrandt (Rembrandt van Rijn)", "Johannes Vermeer", 
+                       "Caravaggio (Michelangelo Merisi)", "Joseph Mallord William Turner", "Auguste Renoir",
+                       "Camille Pissarro"]
+    
+    # all_artists = [row[0] for row in Art.query.with_entities(Art.artist).distinct().all()]
+
+    return render_template(
+        "browse_popular_artists.html",
+        artists=POPULAR_ARTISTS
+    )
+
+@main.route('/api/popular_artists/<artist>/artworks')
+def get_popular_artist_artworks(artist):
+
+    # parameters for pagination
+    page = int(request.args.get('page', 1))
+    per_page = 15
+
+    # query artworks for the specified artist
+    total_artworks = Art.query.filter_by(artist=artist).distinct(Art.objectID).count()
+    artworks = Art.query.filter_by(artist=artist) \
+                        .distinct(Art.objectID) \
+                        .offset((page - 1) * per_page) \
+                        .limit(per_page) \
+                        .all()
+    
+    # prepare data to return
+    artwork_data = [
+        {
+            "id": artwork.objectID,
+            "title": artwork.title,
+            "image": artwork.primaryImage,
+            "artist": artwork.artist
+        } for artwork in artworks
+    ]
+
+    total_pages = ceil(total_artworks / per_page)
+
+    return jsonify({
+        "artworks": artwork_data,
+        "total_pages": total_pages,
+        "current_page": page
+    })
+
+# @main.route('/add_user', methods=['GET', 'POST'])
+# def add_user():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         new_user = User(username=username)
+#         db.session.add(new_user)
+
+#         try:
+#             db.session.commit()
+#         except SQLAlchemy.exc.IntegrityError as e:
+#             if 'unique constraint' in str(e):
+#                 return "Username already exists. Please choose a different one.", 400
+
+#         return f"User {username} added successfully!"
+    
+#     return '''
+#         <form method="POST">
+#             Username: <input type="text" name="username"><br>
+#             <input type="submit" value="Add User">
+#         </form>
+#     '''

@@ -8,8 +8,15 @@ from app.models import User, Art
 from app.config import Config
 
 
-HAS_IMAGES_QUERY_ROOT_URL = "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&isHighlight=true&q="
+HAS_IMAGES_IS_HIGHLIGHT_QUERY_ROOT_URL = "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&isHighlight=true&q="
+HAS_IMAGES_QUERY_ROOT_URL = "https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q="
 OBJECT_ID_ROOT_URL = "https://collectionapi.metmuseum.org/public/collection/v1/objects/"
+
+POPULAR_ARTISTS = set(["Vincent van Gogh", "Leonardo da Vinci", "Claude Monet", "Rembrandt (Rembrandt van Rijn)",
+                    "Gustav Klimt", "Pablo Picasso", "Johannes Vermeer", "Andy Warhol", 
+                    "Caravaggio (Michelangelo Merisi)", "Joseph Mallord William Turner", "Auguste Renoir",
+                    "Michelangelo Buonarroti", "Donatello", "Diane Arbus", "Tiffany & Co."])
+
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 async def fetch_art_data(session, objectID):
@@ -39,7 +46,7 @@ async def import_data(batch_size=1000):
             print(f"Now importing art for query {char}")
 
             # retrieve all objectIDs for a given query
-            response = await session_requests.get(HAS_IMAGES_QUERY_ROOT_URL + char, ssl=ssl_context)
+            response = await session_requests.get(HAS_IMAGES_IS_HIGHLIGHT_QUERY_ROOT_URL + char, ssl=ssl_context)
             
             if response.status == 200:
                 objects = await response.json()
@@ -83,6 +90,69 @@ async def import_data(batch_size=1000):
 
     return
 
+async def import_popular_artist_data(batch_size=1000):
+
+    query_chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+    batch = []
+    batch_counter = 0
+
+    engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+    Session = sessionmaker(bind=engine)
+    db_session = Session()
+
+    # for non-blocking http requests
+    async with aiohttp.ClientSession() as session_requests:
+    
+        # only import art with images going through each char for query results
+        for char in query_chars:
+            print(f"Now importing art for query {char}")
+
+            # retrieve all objectIDs for a given query
+            response = await session_requests.get(HAS_IMAGES_QUERY_ROOT_URL + char, ssl=ssl_context)
+            
+            if response.status == 200:
+                objects = await response.json()
+                
+                tasks = []
+                # objectIDs retrieved, add to tasks to add to the db_session
+                for objectID in objects["objectIDs"]:
+                    tasks.append(fetch_art_data(session_requests, objectID))
+
+                # gather the art data for each objectID
+                results = await asyncio.gather(*tasks)
+
+                for art_object in results:
+                    if art_object and art_object["artistDisplayName"] in POPULAR_ARTISTS:
+                        print("artwork from", art_object["artistDisplayName"], "found")
+                        
+                        art_instance = Art(objectID=art_object["objectID"], primaryImage=art_object["primaryImageSmall"], \
+                                            artist=art_object["artistDisplayName"], artist_bio=art_object["artistDisplayBio"], \
+                                            artwork_date=art_object["objectDate"], medium=art_object["medium"], \
+                                            dimensions=art_object["dimensions"], department=art_object["department"], \
+                                            object_name=art_object["objectName"], title=art_object["title"], \
+                                            period=art_object["period"])
+                        
+                        batch.append(art_instance)
+
+                    if len(batch) >= batch_size:
+                        db_session.add_all(batch)
+                        db_session.commit()
+                        batch = []
+
+                        batch_counter += 1
+                        print(f"Batch number {batch_counter} complete")
+                
+            else:
+                print(f"Failed to retrieve data: {response.status}")
+
+        if batch:
+            db_session.add_all(batch)
+            db_session.commit()
+
+    db_session.close()
+    print("Import complete")
+
+    return
 
 if __name__ == "__main__":
-    asyncio.run(import_data())
+    asyncio.run(import_popular_artist_data())
