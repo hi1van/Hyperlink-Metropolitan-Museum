@@ -60,8 +60,9 @@ def get_department_artworks(department):
     per_page = 15
 
     # query artworks for the specified department
-    total_artworks = Art.query.filter_by(department=department).count()
+    total_artworks = Art.query.filter_by(department=department).distinct(Art.objectID).count()
     artworks = Art.query.filter_by(department=department) \
+                        .distinct(Art.objectID) \
                         .offset((page - 1) * per_page) \
                         .limit(per_page) \
                         .all()
@@ -107,6 +108,53 @@ def get_artwork(objectID):
         period = artwork.period,
     )
 
+@main.route('/browse/popular_artists')
+def browse_popular_artists():
+
+    # gather all available distinct departments
+    POPULAR_ARTISTS = ["Vincent van Gogh", "Leonardo da Vinci", "Rembrandt (Rembrandt van Rijn)", "Johannes Vermeer", 
+                       "Caravaggio (Michelangelo Merisi)", "Joseph Mallord William Turner", "Auguste Renoir",
+                       "Camille Pissarro"]
+    
+    # all_artists = [row[0] for row in Art.query.with_entities(Art.artist).distinct().all()]
+
+    return render_template(
+        "browse_popular_artists.html",
+        artists=POPULAR_ARTISTS
+    )
+
+@main.route('/api/popular_artists/<artist>/artworks')
+def get_popular_artist_artworks(artist):
+
+    # parameters for pagination
+    page = int(request.args.get('page', 1))
+    per_page = 15
+
+    # query artworks for the specified artist
+    total_artworks = Art.query.filter_by(artist=artist).distinct(Art.objectID).count()
+    artworks = Art.query.filter_by(artist=artist) \
+                        .distinct(Art.objectID) \
+                        .offset((page - 1) * per_page) \
+                        .limit(per_page) \
+                        .all()
+    
+    # prepare data to return
+    artwork_data = [
+        {
+            "id": artwork.objectID,
+            "title": artwork.title,
+            "image": artwork.primaryImage,
+            "artist": artwork.artist
+        } for artwork in artworks
+    ]
+
+    total_pages = ceil(total_artworks / per_page)
+
+    return jsonify({
+        "artworks": artwork_data,
+        "total_pages": total_pages,
+        "current_page": page
+    })
 
 # @main.route('/add_user', methods=['GET', 'POST'])
 # def add_user():
