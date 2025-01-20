@@ -43,6 +43,13 @@ a.logo:hover .inverted {
     opacity: 1;
 }
 
+div#department-selection {
+    padding-left: 12px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+}
+
 button.button.is-unselected {
     color: #FFF;
     font-family: Inter, sans-serif;
@@ -50,8 +57,8 @@ button.button.is-unselected {
     font-weight: 300;
     background-color: #C2C2C2;
     border-color: #C2C2C2;
-    margin-right: 12px;
-    margin-bottom: 8px;
+    /* margin-right: 12px;
+    margin-bottom: 8px; */
 }
 
 button.button.is-selected {
@@ -61,8 +68,8 @@ button.button.is-selected {
     font-weight: 300;
     background-color: #9D2933;
     border-color: #9D2933;
-    margin-right: 12px;
-    margin-bottom: 8px;
+    /* margin-right: 12px;
+    margin-bottom: 8px; */
 }
 
 button.button.is-unselected:hover {
@@ -120,8 +127,19 @@ button.navigation:hover {
     border-color: #C53440;
 }
 
+button.navigation-unavailable {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: small;
+    font-weight: 300;
+    background-color: #C2C2C2;
+    border-color: #C2C2C2;
+    margin-right: 12px;
+}
+
 h3.page-text {
     font-size: small;
     font-weight: 300;
     color: #000;
+    align-items: center;
 }
