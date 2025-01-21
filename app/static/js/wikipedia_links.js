@@ -5,11 +5,14 @@ async function fetchWikipediaLink(query) {
         if (response.ok) {
             const data = await response.json();
             if (data.type !== "disambiguation") {
-                return data.content_urls.desktop.page; // get the Wikipedia page URL
+                return {
+                    link: data.content_urls.desktop.page || null, // get the Wikipedia page URL
+                    extract: data.extract || null   // get the extract or default message
+                };
             }
         }
     } catch (error) {
         console.error("Error fetching Wikipedia link:", error);
     }
-    return null; // return null if no valid link is found
+    return { link: null, extract: null }; // return null if no valid link is found
 }

@@ -55,7 +55,7 @@
         <div class="columns">
             <div class="column is-9">
                 <h2 class="art_title">
-                    <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
+                    <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>,&nbsp;<i>{{ artwork_date }}</i>
                     <span class="info-icon">
                         <i class="fas fa-circle-info"></i>
                         <div class="popup">
@@ -78,7 +78,7 @@
             <div class="column is-narrow">
                 <img src="{{ image }}" alt="Image not found!">
             </div>
-            <div class="column is-narrow">
+            <div class="column is-narrow is-5">
                 <div id="panel_padding">
                     <div class="artist_panel">
                         <h3 class="name">
@@ -93,6 +93,7 @@
                         </h3>
                         <h4 class="desc">{{ artist_bio }}</h4>
                         <h4 class="desc"><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
+                        <div id="extract"></div>
                     </div>
                 </div>
             </div>
@@ -123,10 +124,10 @@
 <script>
     // function to set the Wikipedia link conditionally
     function setWikipediaLink(elementId, textContent) {
-        fetchWikipediaLink(textContent).then((link) => {
+        fetchWikipediaLink(textContent).then((data) => {
             const element = document.getElementById(elementId);
-            if (link) {
-                element.href = link;  // set the href to the Wikipedia link
+            if (data.link) {
+                element.href = data.link;  // set the href to the Wikipedia link
             } else {
                 element.removeAttribute("href");  // remove the href if no link is found
                 element.style.cursor = 'default';  // change cursor style to indicate it's not clickable
@@ -134,9 +135,26 @@
         });
     }
 
+    function getWikipediaExtract(textContent) {
+        fetchWikipediaLink(textContent).then((data) => {
+            const extract = document.getElementById("extract");
+
+            if (data.extract) {
+                extract.innerHTML = `
+                    <h4 class="desc">
+                        ${data.extract}
+                        <br> - Wikipedia.  
+                        <a href="${data.link}" target="_blank">Read More</a>
+                    </h4>
+                `
+            }
+        });
+    }
+
     // set the link for the artwork title
     const artworkTitle = document.getElementById("art_title").textContent;
     setWikipediaLink("art_title", artworkTitle);
+    getWikipediaExtract(artworkTitle);
 
     const artistName = document.getElementById("artist_name").textContent;
     setWikipediaLink("artist_name", artistName);
