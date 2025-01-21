@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/hyperMuseum.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="page-container">
@@ -55,6 +56,13 @@
             <div class="column is-9">
                 <h2 class="art_title">
                     <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
+                    <span class="info-icon">
+                        <i class="fas fa-circle-info"></i>
+                        <div class="popup">
+                            If available, the artwork's name can be clicked to take you to its Wikipedia page for you to
+                            learn more.
+                        </div>
+                    </span>
                 </h2>
             </div>
             <div class="column has-text-right" style="margin-top: 50px; ">
@@ -72,7 +80,16 @@
             <div class="column is-narrow">
                 <div id="panel_padding">
                     <div class="artist_panel">
-                        <h3 class="name"><a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a></h3>
+                        <h3 class="name">
+                            <a id="artist_name" href="#" target="_blank" style="color: inherit;">{{ artist or 'Artist Unknown' }}</a>
+                            <span class="info-icon">
+                                <i class="fas fa-circle-info"></i>
+                                <div class="popup">
+                                    If available, the artist's name can be clicked to take you to their Wikipedia page for you to
+                                    learn more.
+                                </div>
+                            </span>
+                        </h3>
                         <h4 class="desc">{{ artist_bio }}</h4>
                         <h4 class="desc"><a id="period" href="#" target="_blank" style="color: inherit;">{{ period }}</a></h4>
                     </div>

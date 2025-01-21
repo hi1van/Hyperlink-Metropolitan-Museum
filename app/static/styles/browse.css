@@ -99,7 +99,7 @@ h2.browse_title {
     font-weight: 400;
     line-height: normal;
     margin-top: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 a.home:hover {
@@ -132,6 +132,13 @@ button.navigation-unavailable {
     background-color: #C2C2C2;
     border-color: #C2C2C2;
     margin-right: 12px;
+}
+
+h2.page-text {
+    font-size: large;
+    font-weight: 300;
+    color: #000;
+    align-items: center;
 }
 
 h3.page-text {
@@ -183,11 +190,21 @@ h3.page-text {
     pointer-events: none; /* prevent overlay from being clickable */
 }
 
+h2.overlay-text {
+    color: #FFF !important;
+}
+
 .frame-image:hover .overlay {
     opacity: 1; /* show overlay on hover */
 }
 
 a {
     z-index: 1; /* ensure the link is above the overlay */
+}
+
+div#artwork-grid {
+    padding: 20px;
+    background-color: #EEEAE4;
+    border-radius: 10px;
 }
 

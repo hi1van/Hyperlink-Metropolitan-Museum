@@ -59,6 +59,12 @@
             </div>
         </div>
 
+        <div class="columns">
+            <div class="column">
+                <h2 class="page-text">Select an artist:</h2>
+            </div>
+        </div>
+
         <div class="columns is-multiline">
             {% for artist in artists %}
             <div id="selection" class="column is-narrow">
@@ -114,8 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </a>
                                 <div class="overlay">
                                     <div class="overlay-text">
-                                        <h2 class="page-text" style="text-align: center;">${artwork.title}</h2>
-                                        <h2 class="page-text" style="text-align: center;">${artwork.artist}</h2>
+                                        <h2 class="overlay-text" style="text-align: center;">${artwork.title}</h2>
+                                        <h2 class="overlay-text" style="text-align: center;">${artwork.artist}</h2>
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +243,15 @@ document.addEventListener("DOMContentLoaded", () => {
             loadArtworks(artist); // load artworks for the selected artist
         });
     });
+
+    // automatically select and load the first artist
+    if (artistButtons.length > 0) {
+        const firstButton = artistButtons[0];
+        firstButton.classList.remove("is-unselected");
+        firstButton.classList.add("is-selected");
+        const firstArtist = firstButton.getAttribute('data-artist');
+        loadArtworks(firstArtist);
+    }
 });
 
 
