@@ -125,10 +125,10 @@
 <script>
     // function to set the Wikipedia link conditionally
     function setWikipediaLink(elementId, textContent) {
-        fetchWikipediaLink(textContent).then((link) => {
+        fetchWikipediaLink(textContent).then((data) => {
             const element = document.getElementById(elementId);
-            if (link) {
-                element.href = link;  // set the href to the Wikipedia link
+            if (data.link) {
+                element.href = data.link;  // set the href to the Wikipedia link
             } else {
                 element.removeAttribute("href");  // remove the href if no link is found
                 element.style.cursor = 'default';  // change cursor style to indicate it's not clickable
