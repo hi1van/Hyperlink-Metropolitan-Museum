@@ -73,3 +73,23 @@ h2.page-text {
     color: #000;
     align-items: center;
 }
+
+h3.page-text {
+    font-size: large;
+    font-weight: 300;
+    color: #000;
+    align-items: center;
+}
+
+div.panel {
+    background: #EEEAE4;
+    justify-content: left;
+    align-items: left;
+    color: #000;
+}
+
+div#panel_padding {
+    padding: 20px;
+    background-color: #EEEAE4;
+    border-radius: 10px;
+}
