@@ -83,6 +83,13 @@ a.home {
     align-items: center;
 }
 
+a.home.is-selected {
+    color:#6f6f6f;
+    font-family: Garamond;
+    font-size: 30px;
+    align-items: center;
+}
+
 h2.browse_title {
     color: #000;
     text-align: left;
@@ -95,13 +102,7 @@ h2.browse_title {
     margin-bottom: 20px;
 }
 
-a {
-    text-decoration: underline;
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 4px; 
-}
-
-a:hover {
+a.home:hover {
     color: #6f6f6f !important;
     text-decoration: underline;
     text-decoration-thickness: 1.5px;

@@ -29,9 +29,24 @@
                     >
                 </a>
             </div>
-            <div class="column is-flex is-align-items-center">
+            <div class="column is-flex is-align-items-center is-narrow">
                 <a class="home" href="/index">
                     Home
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center is-narrow">
+                <a class="home is-selected">
+                    Random
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center is-narrow">
+                <a class="home" href="/browse/departments">
+                    Browse by Department
+                </a>
+            </div>
+            <div class="column is-flex is-align-items-center">
+                <a class="home" href="/browse/popular_artists">
+                    Browse by Popular Artist
                 </a>
             </div>
         </div>
@@ -41,6 +56,11 @@
                 <h2 class="art_title">
                     <a id="art_title" href="#" target="_blank" style="color: inherit;">{{ title }}</a>, <i>{{ artwork_date }}</i>
                 </h2>
+            </div>
+            <div class="column has-text-right" style="margin-top: 50px; ">
+                <a href="/hyperMuseum" class="no-decoration">
+                    <button class="button">Next Art Piece</button>
+                </a>
             </div>
         </div>
 
