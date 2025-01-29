@@ -1,11 +1,16 @@
-from flask import render_template, request, Blueprint, jsonify
+from flask import render_template, request, Blueprint, jsonify, session
+import google.generativeai as genai
 from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
 from .museum import *
 from math import ceil
+from .config import Config
+from io import BytesIO
+from PIL import Image
 
 main = Blueprint('main', __name__)
+genai.configure(api_key=Config.GEMINI_API_KEY)
 
 @main.route('/')
 @main.route('/index')
@@ -122,6 +127,52 @@ def browse_popular_artists():
         "browse_popular_artists.html",
         artists=POPULAR_ARTISTS
     )
+
+@main.route('/api/chat', methods=['POST'])
+def artwork_chat():
+
+    user_message = request.json.get("message")
+    artwork_title = request.json.get("artwork_title") 
+    artist_name = request.json.get("artist_name")
+    medium = request.json.get("medium")
+    image_url = request.json.get("image_url") 
+
+    if not user_message:
+        return jsonify({"response": "Please ask a question!"})
+
+    chat_history = session.get("chat_history", [])
+    chat_history.append({"role": "user", "parts": user_message})
+    session["chat_history"] = chat_history
+
+    try:
+        response = requests.get(image_url)
+        image = Image.open(BytesIO(response.content))
+
+        model = genai.GenerativeModel(
+                    model_name="gemini-1.5-flash",
+                    system_instruction=f"""You are an AI chatbot named August, acting as a guide at the Hyperlink Metropolitan Museum which
+                                        features artworks from the Metropolitan Museum in New York City. Answer questions as an expert art
+                                        historian, staying relevant to this artwork or the MET museum.
+                                        Avoid speculation and stick to factual information.
+                                        Aim for concise answers, which don't involve language which is too complex for the
+                                        average art-enjoyer unless thorough discussion is desired."""
+                )
+        
+        chat = model.start_chat(history=session["chat_history"])
+
+        context = f"""The user is viewing the artwork '{artwork_title}' by {artist_name}. The medium used is {medium}."""
+        prompt = f"""The user's message is: {user_message}
+                    Context: {context} The image is of the artwork."""
+
+        response = chat.send_message([prompt, image])
+
+        chat_history.append({"role": "model", "parts": response.text})
+        session["chat_history"] = chat_history
+
+        return jsonify({"response": response.text})
+    except Exception as e:
+        return jsonify({"response": "Sorry! There was an error processing your message. Please ask me again!"})
+    
 
 @main.route('/api/popular_artists/<artist>/artworks')
 def get_popular_artist_artworks(artist):
