@@ -206,25 +206,3 @@ def get_popular_artist_artworks(artist):
         "total_pages": total_pages,
         "current_page": page
     })
-
-# @main.route('/add_user', methods=['GET', 'POST'])
-# def add_user():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         new_user = User(username=username)
-#         db.session.add(new_user)
-
-#         try:
-#             db.session.commit()
-#         except SQLAlchemy.exc.IntegrityError as e:
-#             if 'unique constraint' in str(e):
-#                 return "Username already exists. Please choose a different one.", 400
-
-#         return f"User {username} added successfully!"
-    
-#     return '''
-#         <form method="POST">
-#             Username: <input type="text" name="username"><br>
-#             <input type="submit" value="Add User">
-#         </form>
-#     '''

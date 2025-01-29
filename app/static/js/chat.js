@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // show the spinner when the user submits a message
+        document.getElementById("loading-indicator").style.display = 'inline-block';
+
         addMessage("user", message);
         chatInput.value = "";
 
@@ -40,8 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             addMessage("bot", data.response);
+            // hide the spinner once response is received
+            document.getElementById("loading-indicator").style.display = 'none';
         } catch (error) {
             console.error("Error:", error);
+
+            // hide the spinner if an error is encountered
+            document.getElementById("loading-indicator").style.display = 'none';
         }
     }
 

@@ -133,6 +133,7 @@ h2.chat {
     margin-bottom: 10px;
     align-items: center;
     display: flex;
+    margin-right: 10px;
 }
 
 h4.desc {
@@ -307,4 +308,23 @@ input:focus + .icon i {
 #chat-messages {
     max-height: 300px;
     overflow-y: auto;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #535353;
+    border-radius: 50%;
+    width: 23px;
+    height: 23px;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.chat-header {
+    display: flex;
 }
