@@ -36,12 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function addMessage(sender, text) {
         const messageDiv = document.createElement("div");
+        const messageText = document.createElement("h3");
+        messageText.classList.add("chat");
+        messageText.textContent = text;
+
         if (sender === "user") {
             messageDiv.classList.add("user-message");
         } else if (sender == "bot") {
             messageDiv.classList.add("bot-message"); 
         }
-        messageDiv.textContent = text;
+
+        messageDiv.appendChild(messageText);
+        
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
