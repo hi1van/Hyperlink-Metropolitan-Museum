@@ -96,6 +96,17 @@
                         <div id="extract"></div>
                     </div>
                 </div>
+
+                <div id="panel_padding" style="margin-top: 20px;">
+                    <div id="chat-messages" class="messages">
+
+                    </div>
+                    <div id="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="Ask more about this artwork..." />
+                        <button id="send-btn" class="button">Send</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -120,6 +131,7 @@
 </footer>
 </html>
 
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 <script src="{{ url_for('static', filename='js/wikipedia_links.js') }}"></script>
 <script>
     // function to set the Wikipedia link conditionally

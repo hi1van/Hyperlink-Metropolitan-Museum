@@ -190,3 +190,30 @@ div#extract {
     word-break: break-word; 
     display: block; 
 }
+
+div.messages {
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+    color: #000;
+}
+
+div.user-message {
+    justify-content: right !important; 
+}
+
+div.bot-message {
+    justify-content: left !important; 
+}
+
+
+button#send-btn {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: smaller;
+    font-weight: 300;
+    background-color: #9D2933;
+    border-color: #9D2933;
+}
+
+

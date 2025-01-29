@@ -1,11 +1,14 @@
 from flask import render_template, request, Blueprint, jsonify
+import google.generativeai as genai
 from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
 from .museum import *
 from math import ceil
+from .config import Config
 
 main = Blueprint('main', __name__)
+genai.configure(api_key=Config.GEMINI_API_KEY)
 
 @main.route('/')
 @main.route('/index')
@@ -122,6 +125,21 @@ def browse_popular_artists():
         "browse_popular_artists.html",
         artists=POPULAR_ARTISTS
     )
+
+@main.route('/api/chat', methods=['POST'])
+def artwork_chat():
+
+    user_message = request.json.get("message")
+    if not user_message:
+        return jsonify({"response": "Please ask a question!"})
+
+    try:
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(user_message)
+        return jsonify({"response": response.text})
+    except Exception as e:
+        return jsonify({"response": "Error processing request."})
+    
 
 @main.route('/api/popular_artists/<artist>/artworks')
 def get_popular_artist_artworks(artist):
