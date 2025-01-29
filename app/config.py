@@ -7,3 +7,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     GEMINI_API_KEY=os.getenv('GEMINI_API_KEY')
+    FLASK_SECRET_KEY=os.getenv('FLASK_SECRET_KEY')

@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function sendMessage() {
         const message = chatInput.value.trim();
+        const artworkTitle = document.getElementById("art_title").textContent;
+        const artistName = document.getElementById("artist_name").textContent;
+        const medium = document.querySelector(".art_panel h4.desc").textContent; 
+
         if (message === "") {
             return;
         }
@@ -24,7 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ message })
+                body: JSON.stringify({
+                    message: message,
+                    artwork_title: artworkTitle,
+                    artist_name: artistName,
+                    medium: medium
+                })
             });
 
             const data = await response.json();
