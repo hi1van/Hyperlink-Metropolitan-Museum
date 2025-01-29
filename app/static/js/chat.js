@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const artworkTitle = document.getElementById("art_title").textContent;
         const artistName = document.getElementById("artist_name").textContent;
         const medium = document.querySelector(".art_panel h4.desc").textContent; 
+        const imageUrl = document.getElementById("artwork_image").src;
 
         if (message === "") {
             return;
@@ -32,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     message: message,
                     artwork_title: artworkTitle,
                     artist_name: artistName,
-                    medium: medium
+                    medium: medium,
+                    image_url: imageUrl
                 })
             });
 

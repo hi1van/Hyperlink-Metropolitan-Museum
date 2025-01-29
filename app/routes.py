@@ -6,6 +6,8 @@ from .models import User
 from .museum import *
 from math import ceil
 from .config import Config
+from io import BytesIO
+from PIL import Image
 
 main = Blueprint('main', __name__)
 genai.configure(api_key=Config.GEMINI_API_KEY)
@@ -133,6 +135,7 @@ def artwork_chat():
     artwork_title = request.json.get("artwork_title") 
     artist_name = request.json.get("artist_name")
     medium = request.json.get("medium")
+    image_url = request.json.get("image_url") 
 
     if not user_message:
         return jsonify({"response": "Please ask a question!"})
@@ -142,6 +145,9 @@ def artwork_chat():
     session["chat_history"] = chat_history
 
     try:
+        response = requests.get(image_url)
+        image = Image.open(BytesIO(response.content))
+
         model = genai.GenerativeModel(
                     model_name="gemini-1.5-flash",
                     system_instruction=f"""You are an AI chatbot named August, acting as a guide at the Hyperlink Metropolitan Museum which
@@ -156,9 +162,9 @@ def artwork_chat():
 
         context = f"""The user is viewing the artwork '{artwork_title}' by {artist_name}. The medium used is {medium}."""
         prompt = f"""The user's message is: {user_message}
-                    Context: {context}"""
+                    Context: {context} The image is of the artwork."""
 
-        response = chat.send_message(prompt)
+        response = chat.send_message([prompt, image])
 
         chat_history.append({"role": "model", "parts": response.text})
         session["chat_history"] = chat_history
