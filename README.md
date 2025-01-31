@@ -1,19 +1,31 @@
-Ever wanted to visit the world renowned Metropolitan Museum of Art?
+<img width="200" alt="image" src="https://github.com/hi1van/Hyperlink-Metropolitan-Museum/app/static/images/hypmet.png">
 
-Well today and any day is your lucky day!
+# The Hyperlink Metropolitan Museum
+Ever wanted to visit the Metropolitan Museum of Art? Look no further.
 
+Visit the live website here: https://www.hypermetmuseum.art
 
-The Hyperlink Metropolitan Museum is designed so that you can get lost in the endless exhibitions of the MET. In real life, it is easy to get lost in the countless rooms of art displays, 
-and here is no different - get lost in the endless web pages, where each page is its own display.
+## Project Background
+The Hyperlink Metropolitan Museum is designed so that you can explore the renowned exhibitions of the MET in a purpose-built virtual experience. In real life, it is easy to find yourself lost in the maze countless rooms of art displays, 
+and I aimed to deliver the same, but online - find yourself lost in the endless web pages, where each page is its own display.
 
-In it's current state, you can look at any "highlight" piece from any department. 
+The experience should also be an educational and enlightening one. Accompanying artworks are Wikipedia extracts and links to artist and artwork Wikipedia pages for further reading (if available). As with real-world museums, you have your very own guide who is there to answer whatever questions you may have to do with the art you are viewing.
 
-What's next for the Hyperlink Metropolitan Museum?
+## Features
+- **Random viewing**: Don't know what you want to view? Let the museum take you around
+- **Browsing by department or popular artist**: Have a particular department or featured artist you want to explore? All corresponding art at your fingertips
+- **AI Guide Chat integration**: Have burning questions? Each artwork display its very own guide for you to ask any question you like
+- **Wikipedia integration**: Want to dive deeper into an artwork or artist's background? Wikipedia extracts for more info to you and links to associated pages for futher reading
 
-- Expand on the "hyperlink" aspect to it - allow the user to choose their own path as opposed to displays being random in order.
-- Allow the user to explore a smaller subset of the art pieces at their own choosing - eg. allow them to explore artworks.
-- Incorporate art descriptions into the display pages for a more educational/enlightening experience. 
+## What's next for the Hyperlink Metropolitan Museum?
+- Add user account functionality - users can collect their favourite artworks in personal collections, users can comment their personal interpretations or comments on artworks, users can upvote art
 
-This project has not been deployed and is still a work in progress. However, you can run it on your local machine.
-
-API used: https://metmuseum.github.io
+## Tools
+- **Frontend**: HTML, CSS, JS, Bulma
+- **Backend**: Flask
+- **Database**: PostgreSQL (Amazon RDS)
+- **Hosting**: Render
+- **Museum** API: https://metmuseum.github.io
+- **AI**: Google Gemini API
+- **UI/UX Design**: Figma
+- **Other**: Wikipedia API
