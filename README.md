@@ -1,4 +1,4 @@
-<img width="200" alt="image" src="https://github.com/hi1van/Hyperlink-Metropolitan-Museum/app/static/images/hypmet.png">
+<img width="200" alt="image" src="https://github.com/hi1van/Hyperlink-Metropolitan-Museum/blob/main/app/static/images/hypmet.png">
 
 # The Hyperlink Metropolitan Museum
 Ever wanted to visit the Metropolitan Museum of Art? Look no further.
