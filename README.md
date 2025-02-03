@@ -23,7 +23,7 @@ The experience should also be an educational and enlightening one. Accompanying 
 ## Tools
 - **Frontend**: HTML, CSS, JS, Bulma
 - **Backend**: Flask
-- **Database**: PostgreSQL (Amazon RDS)
+- **Database**: SQLite
 - **Hosting**: Render
 - **Museum** API: https://metmuseum.github.io
 - **AI**: Google Gemini API
