@@ -1,5 +1,6 @@
 from flask import render_template, request, Blueprint, jsonify, session
 import google.generativeai as genai
+import requests
 from flask_sqlalchemy import SQLAlchemy
 from . import db
 from .models import User
@@ -30,7 +31,7 @@ def hyperMuseum():
 
     # invalid return object
     if art_object is None:
-        return "Object not found", 404  
+        return jsonify({"error": "Object not found"}), 404
     
     return render_template(
         "hyperMuseum.html",
@@ -97,7 +98,7 @@ def get_artwork(objectID):
 
     # invalid return object
     if artwork is None:
-        return "Object not found", 404  
+        return jsonify({"error": "Object not found"}), 404
     
     return render_template(
         "artwork.html",
