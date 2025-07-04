@@ -17,16 +17,17 @@ genai.configure(api_key=Config.GEMINI_API_KEY)
 @main.route('/index')
 def index():
     """
-    Landing page
+    renders the landing page
     """
     return render_template("index.html")
 
 @main.route('/hyperMuseum')
 def hyperMuseum():
     """
-    Renders an art display page
+    renders an art display page with a random art object
     """
 
+    # get the art object to be displayed
     art_object = get_art_object()
 
     # invalid return object
@@ -49,8 +50,11 @@ def hyperMuseum():
 
 @main.route('/browse/departments')
 def browse_departments():
+    """
+    renders a page to browse available departments of the MET
+    """
 
-    # gather all available distinct departments
+    # gather all available distinct departments from the db
     departments = [row[0] for row in Art.query.with_entities(Art.department).distinct().all()]
 
     return render_template(
@@ -60,17 +64,20 @@ def browse_departments():
 
 @main.route('/api/departments/<department>/artworks')
 def get_department_artworks(department):
+    """
+    returns all artworks in a given department in json form
+    """
 
     # parameters for pagination
     page = int(request.args.get('page', 1))
-    per_page = 15
+    PER_PAGE = 15
 
     # query artworks for the specified department
     total_artworks = Art.query.filter_by(department=department).distinct(Art.objectID).count()
     artworks = Art.query.filter_by(department=department) \
                         .distinct(Art.objectID) \
-                        .offset((page - 1) * per_page) \
-                        .limit(per_page) \
+                        .offset((page - 1) * PER_PAGE) \
+                        .limit(PER_PAGE) \
                         .all()
     
     # prepare data to return
@@ -83,7 +90,7 @@ def get_department_artworks(department):
         } for artwork in artworks
     ]
 
-    total_pages = ceil(total_artworks / per_page)
+    total_pages = ceil(total_artworks / PER_PAGE)
 
     return jsonify({
         "artworks": artwork_data,
@@ -93,6 +100,9 @@ def get_department_artworks(department):
 
 @main.route('/artwork/<objectID>')
 def get_artwork(objectID):
+    """
+    renders an artwork page for the specified ID
+    """
 
     artwork = Art.query.filter_by(objectID=objectID).first()
 
@@ -116,12 +126,16 @@ def get_artwork(objectID):
 
 @main.route('/browse/popular_artists')
 def browse_popular_artists():
+    """
+    renders a page to browse select popular artists featured at the MET
+    """
 
     # gather all available distinct departments
     POPULAR_ARTISTS = ["Vincent van Gogh", "Leonardo da Vinci", "Rembrandt (Rembrandt van Rijn)", "Johannes Vermeer", 
                        "Caravaggio (Michelangelo Merisi)", "Joseph Mallord William Turner", "Auguste Renoir",
                        "Camille Pissarro"]
     
+    # FOR TESTING:
     # all_artists = [row[0] for row in Art.query.with_entities(Art.artist).distinct().all()]
 
     return render_template(
@@ -131,24 +145,34 @@ def browse_popular_artists():
 
 @main.route('/api/chat', methods=['POST'])
 def artwork_chat():
-
+    """
+    accepts json input from the frontend
+    feeds in user input and returns model's response
+    """
+    
+    # extract user input and context info from the request body
     user_message = request.json.get("message")
     artwork_title = request.json.get("artwork_title") 
     artist_name = request.json.get("artist_name")
     medium = request.json.get("medium")
     image_url = request.json.get("image_url") 
 
+    # reply in case of empty message
     if not user_message:
         return jsonify({"response": "Please ask a question!"})
 
+    # track and add to chat history in the FLask session
     chat_history = session.get("chat_history", [])
     chat_history.append({"role": "user", "parts": user_message})
     session["chat_history"] = chat_history
 
     try:
+        # open image for Gemini
         response = requests.get(image_url)
         image = Image.open(BytesIO(response.content))
 
+        # set up Gemini model
+        # TODO refine the model's prompt for better structured responses
         model = genai.GenerativeModel(
                     model_name="gemini-1.5-flash",
                     system_instruction=f"""You are an AI chatbot named August, acting as a guide at the Hyperlink Metropolitan Museum which
@@ -158,18 +182,22 @@ def artwork_chat():
                                         Aim for concise answers, which don't involve language which is too complex for the
                                         average art-enjoyer unless thorough discussion is desired."""
                 )
-        
+
         chat = model.start_chat(history=session["chat_history"])
 
+        # add to the model's metadata for better responses
         context = f"""The user is viewing the artwork '{artwork_title}' by {artist_name}. The medium used is {medium}."""
         prompt = f"""The user's message is: {user_message}
                     Context: {context} The image is of the artwork."""
 
+        # generate response
         response = chat.send_message([prompt, image])
 
+        # add response to chat history
         chat_history.append({"role": "model", "parts": response.text})
         session["chat_history"] = chat_history
 
+        # return the model's response
         return jsonify({"response": response.text})
     except Exception as e:
         return jsonify({"response": "Sorry! There was an error processing your message. Please ask me again!"})
@@ -177,6 +205,9 @@ def artwork_chat():
 
 @main.route('/api/popular_artists/<artist>/artworks')
 def get_popular_artist_artworks(artist):
+    """
+    returns all artworks of a given artist in json form
+    """
 
     # parameters for pagination
     page = int(request.args.get('page', 1))

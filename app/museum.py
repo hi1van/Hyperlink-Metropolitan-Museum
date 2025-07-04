@@ -6,24 +6,26 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from .models import Art
 
-ROOT_URL = "https://collectionapi.metmuseum.org"
+ROOT_URL = "https://collectionapi.metmuseum.org" # MET API
 N_DEPARTMENTS = 21
 DATABASE_URI = Config.SQLALCHEMY_DATABASE_URI
 
 def get_art_object():
     """
-    takes a unique object ID as input 
-    returns an art object in json format
-    returns None if object ID is invalid
+    returns a random Art object with an image in json format
+    returns None if unsuccessful
     """
 
+    # only retrieve objects with images for display
+    # CHANGE: store this data in db to reduce computation
     objects_with_images = get_objects_with_images()
 
-    # search for the art object in the database first
+    # first search for an art object stored in the database
     engine = create_engine(DATABASE_URI)
     Session = sessionmaker(bind=engine)
     session = Session()
 
+    # set a search limit to avoid time out
     loop_limit = 10
     loop_counter = 0
 
@@ -32,10 +34,10 @@ def get_art_object():
     while loop_counter < loop_limit:
         loop_counter += 1
 
-        # select an image
+        # select an object randomly
         objectID = get_random_object_with_image_ID(objects_with_images)
         
-        # query to fetch an art object with given objectID
+        # query to fetch the art object with given objectID
         art_object = session.query(Art).filter(Art.objectID == objectID).first()
 
         if art_object:
@@ -47,7 +49,7 @@ def get_art_object():
             print("Object retrieved via the database")
             return art_object
         else:
-            # fall back and add to the database
+            # fall back - query the API and add to the database
             url = ROOT_URL + f"/public/collection/v1/objects/{objectID}"
 
             art_object = requests.get(url)
@@ -59,7 +61,8 @@ def get_art_object():
                 # doesn't have a link, try again
                 if len(art_object["primaryImageSmall"]) == 0:
                     continue
-
+                
+                # create new art instance to add to the db and return
                 art_instance = Art(objectID=art_object["objectID"], primaryImage=art_object["primaryImageSmall"], \
                                 artist=art_object["artistDisplayName"], artist_bio=art_object["artistDisplayBio"], \
                                 artwork_date=art_object["objectDate"], medium=art_object["medium"], \
@@ -70,9 +73,11 @@ def get_art_object():
                 session.add(art_instance)
                 session.commit()
                 session.close()
+
                 return art_instance
 
     session.close()
+
     # return None object if unsuccessful
     return None
 
